@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Veiculo } from '../entities/veiculo.entity';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { veiculos } from '../entities/veiculo.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -8,23 +8,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class VeiculosService {
    constructor(
 
-    @InjectRepository(Veiculo)
-    private readonly veiculoRepository: Repository<Veiculo>
+    @InjectRepository(veiculos)
+    private readonly veiculoRepository: Repository<veiculos>
    ){}
 
-    async findAll(): Promise<Veiculo[]>{
+    async findAll(): Promise<veiculos[]>{
         return this.veiculoRepository.find();
     }
 
-    async findOne(id: number): Promise<Veiculo | null> {
-        return this.veiculoRepository.findOne({ where: { id } });
+    async findOne(id: number): Promise<veiculos | null> {
+        return this.veiculoRepository.findOne({ where: { id } }) || Promise.reject(new NotFoundException('veiculo não encontrado'));
+        
       }
 
-    async create(veiculo: Veiculo): Promise<Veiculo>  {
+    async create(veiculo: veiculos): Promise<veiculos>  {
          return this.veiculoRepository.save(veiculo)
     }
 
-    async update(id: number , veiculoAtualizado: Partial<Veiculo>): Promise<Veiculo | null> {
+    async update(id: number , veiculoAtualizado: Partial<veiculos>): Promise<veiculos | null> {
         await this.veiculoRepository.update(id, veiculoAtualizado)
         return this.veiculoRepository.findOne({where: {id}})
     }
@@ -34,3 +35,4 @@ export class VeiculosService {
         return result.affected !== 0;
     }
 }
+
