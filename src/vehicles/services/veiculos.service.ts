@@ -18,7 +18,6 @@ export class VeiculosService {
 
     async findOne(id: number): Promise<veiculos | null> {
         return this.veiculoRepository.findOne({ where: { id } }) || Promise.reject(new NotFoundException('veiculo não encontrado'));
-        
       }
 
     async create(veiculo: veiculos): Promise<veiculos>  {
@@ -34,5 +33,6 @@ export class VeiculosService {
         const result = await this.veiculoRepository.delete(id);
         return result.affected !== 0;
     }
+    
 }
 

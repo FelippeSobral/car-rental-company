@@ -1,4 +1,4 @@
-import {Column, Entity , PrimaryGeneratedColumn, ManyToOne} from 'typeorm';
+import {Column, Entity , PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn} from 'typeorm';
 import { Brand } from 'src/brand/entity/brand.entity';
 import { Category } from 'src/category/entities/category.entity';
 
@@ -18,7 +18,15 @@ export class veiculos{
 
   @ManyToOne(() => Brand, (brand) => brand.veiculos, { nullable: false, onDelete: 'CASCADE' })
   marca: Brand;
+  @JoinColumn({name: 'marcaId'})
 
   @ManyToOne(() => Category, (category) => category.veiculos, { nullable: false, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'categoriaId' })
   categoria: Category;
+
+  @CreateDateColumn()
+  createdAt?: Date;
+  
+  //@UpdateDateColumn()
+ // updatedAt?: Date;
 }
