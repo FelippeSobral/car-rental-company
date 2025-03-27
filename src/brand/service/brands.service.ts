@@ -22,14 +22,15 @@ export class BrandsService {
     return brand;
   }
 
-  async create(nome: string): Promise<Brand> {
-    const newBrand = this.brandRepository.create({ nome });
+  async create(name: string): Promise<Brand> {
+    const newBrand = this.brandRepository.create({ name });
     return this.brandRepository.save(newBrand);
   }
 
-  async update(id: number, nome: string): Promise<Brand> {
+  async update(id: number, name: string): Promise<Brand> {
+    console.log(await this.findOne(id));
     await this.findOne(id);
-    await this.brandRepository.update(id, { nome });
+    await this.brandRepository.update( {id} , { name });
     return this.findOne(id);
   }
 

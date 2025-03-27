@@ -16,17 +16,25 @@ export class veiculos{
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
   preco_diaria: number;
 
-  @ManyToOne(() => Brand, (brand) => brand.veiculos, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => Brand, (brand) => brand.veiculos, { 
+    nullable: false,
+    onDelete: 'CASCADE',
+    eager: true // Carrega automaticamente a marca ao buscar o veículo
+  })
+  @JoinColumn({ name: 'marcaId' })
   marca: Brand;
-  @JoinColumn({name: 'marcaId'})
 
-  @ManyToOne(() => Category, (category) => category.veiculos, { nullable: false, onDelete: 'CASCADE' })
+
+  @ManyToOne(() => Category, (category) => category.veiculos, {
+    nullable: false,
+    onDelete: 'CASCADE',
+    eager: true // Carrega automaticamente a categoria ao buscar o veículo
+  })
   @JoinColumn({ name: 'categoriaId' })
   categoria: Category;
 
   @CreateDateColumn()
   createdAt?: Date;
   
-  //@UpdateDateColumn()
- // updatedAt?: Date;
+ 
 }

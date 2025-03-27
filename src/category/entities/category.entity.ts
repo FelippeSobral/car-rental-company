@@ -1,4 +1,4 @@
-import { veiculos } from 'src/vehicles/entities/veiculo.entity';
+import { veiculos } from 'src/vehicles/entities/vehicles.entity';
 import { Entity, Column, PrimaryGeneratedColumn , OneToMany} from 'typeorm';
 
 @Entity('categorias')
