@@ -6,9 +6,14 @@ export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', unique: true, length: 50, nullable: false })
   descricao: string;
+
+  @Column({ default: true }) // Ativo por padrão
+  ativo: boolean;
 
   @OneToMany(() => veiculos, (veiculo) => veiculo.categoria)
   veiculos: veiculos[];
+
+
 }

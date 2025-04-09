@@ -2,16 +2,29 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { veiculos } from '../entities/vehicles.entity';
+import { Category } from 'src/category/entities/category.entity';
+import { Brand } from 'src/brand/entity/brand.entity';
+import { CreateVehicleDto } from '../dto/CreateVehicleDto';
 
 @Injectable()
 export class VeiculosService {
     constructor(
         @InjectRepository(veiculos)
         private readonly veiculosRepository: Repository<veiculos>,
-    ) {}
+        @InjectRepository(Brand)
+        private readonly brandRepository: Repository<Brand>,
+        @InjectRepository(Category)
+        private readonly categoryRepository: Repository<Category>,
+      ) {}
+
+     
+
+
 
     async findAll(): Promise<veiculos[]> {
-        return this.veiculosRepository.find();
+        return this.veiculosRepository.find({
+            relations: ['marca', 'categoria'] 
+        });
     }
 
     async count(): Promise<number> {
@@ -35,9 +48,29 @@ export class VeiculosService {
         });
     }
 
-    async create(veiculo: veiculos): Promise<veiculos> {
-        return this.veiculosRepository.save(veiculo);
-    }
+    async create(createVehicleDto: CreateVehicleDto): Promise<veiculos> {
+        // Buscando a marca e categoria utilizando os IDs passados no DTO
+        const marca = await this.brandRepository.findOne({ where: { id: createVehicleDto.marcaId } });
+        const categoria = await this.categoryRepository.findOne({ where: { id: createVehicleDto.categoriaId } });
+    
+        // Caso a marca ou a categoria não sejam encontradas, lança um erro
+        if (!marca || !categoria) {
+          throw new Error('Marca ou Categoria não encontrada');
+        }
+    
+        // Criando o novo veículo com as entidades associadas
+        const novoVeiculo = this.veiculosRepository.create({
+          modelo: createVehicleDto.modelo,
+          ano: createVehicleDto.ano,
+          preco_diaria: createVehicleDto.preco_diaria,
+          marca,        // A referência para a marca (associada via ManyToOne)
+          categoria,    // A referência para a categoria (associada via ManyToOne)
+        });
+    
+        // Salvando o novo veículo no banco de dados
+        return this.veiculosRepository.save(novoVeiculo);
+      }
+    
 
     async update(id: number, veiculoAtualizado: Partial<veiculos>): Promise<veiculos | null> {
         await this.veiculosRepository.update(id, veiculoAtualizado);

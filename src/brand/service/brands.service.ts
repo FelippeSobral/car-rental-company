@@ -10,6 +10,10 @@ export class BrandsService {
     private readonly brandRepository: Repository<Brand>,
   ) {}
 
+  async count(): Promise<number> {
+    return this.brandRepository.count();
+}
+
   async findAll(): Promise<Brand[]> {
     return this.brandRepository.find();
   }

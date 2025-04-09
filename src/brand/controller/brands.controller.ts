@@ -5,6 +5,11 @@ import { BrandsService } from '../service/brands.service';
 export class BrandsController {
   constructor(private readonly brandsService: BrandsService) {}
 
+  @Get('count')
+  async count(): Promise<number> {
+    return this.brandsService.count();
+  }
+
   @Get()
   findAll() {
     return this.brandsService.findAll();

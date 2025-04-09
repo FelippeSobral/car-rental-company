@@ -7,6 +7,9 @@ import { databaseConfig } from 'src/config/database.config';
 import { Brand } from 'src/brand/entity/brand.entity';
 import { Category } from 'src/category/entities/category.entity';
 import { veiculos } from '../entities/vehicles.entity';
+import { VeiculosService } from '../services/vehicles.service';
+import { AuthModule } from 'src/auth/auth.module';
+
 
 @Module({
   imports: [
@@ -17,6 +20,8 @@ import { veiculos } from '../entities/vehicles.entity';
     VeiculosModule,
     BrandsModule,
     CategoriesModule,
+    AuthModule
   ],
+ 
 })
 export class AppModule {}

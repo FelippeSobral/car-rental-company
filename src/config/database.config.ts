@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { getEnv, getEnvNumber, getEnvBoolean } from '../utils/env.utils';
+import { AuthModule } from 'src/auth/auth.module';
 
 import { join } from 'path';
 import { Brand } from '../brand/entity/brand.entity';
@@ -19,6 +20,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
     Brand,
     Category,
     veiculos,
+    
     // Adicione outras entidades conforme necessário
   ],
 

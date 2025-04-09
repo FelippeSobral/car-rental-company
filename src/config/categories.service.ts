@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Category } from '../entities/category.entity';
+import { Category } from '../category/entities/category.entity';
 
 @Injectable()
 export class CategoriesService {
@@ -15,15 +15,12 @@ export class CategoriesService {
   }
 
 
-  async findAll(showInativos = false): Promise<Category[]> {
-    if (showInativos) {
-      return this.categoryRepository.find(); // mostra todos
-    }
-    return this.categoryRepository.find({ where: { ativo: true } }); // só ativos
+  async findAll(): Promise<Category[]> {
+    return this.categoryRepository.find();
   }
 
   async findOne(id: number): Promise<Category> {
-    const category = await this.categoryRepository.findOne({ where: { id, ativo: true } });
+    const category = await this.categoryRepository.findOne({ where: { id } });
     if (!category) {
       throw new NotFoundException('Category not found');
     }
@@ -52,13 +49,6 @@ export class CategoriesService {
 
   async remove(id: number): Promise<void> {
     await this.findOne(id);
-    await this.categoryRepository.update(id, { ativo: false });
+    await this.categoryRepository.delete(id);
   }
-  
-  async restore(id: number): Promise<Category> {
-    await this.findOne(id);
-    await this.categoryRepository.update(id, { ativo: true });
-    return this.findOne(id);
-  }
-  
 }

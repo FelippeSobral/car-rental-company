@@ -1,10 +1,14 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { VeiculosService } from '../services/vehicles.service';
 import { veiculos } from '../entities/vehicles.entity';
+import { CreateVehicleDto } from '../dto/CreateVehicleDto';
 
 @Controller('api/vehicles')
 export class VeiculosController {
     constructor(private readonly veiculosService: VeiculosService){}
+
+  
+
 
     @Get()
     async findAll(): Promise<veiculos[]> {
@@ -27,8 +31,8 @@ export class VeiculosController {
     }
 
     @Post()
-    async create(@Body() veiculo: veiculos): Promise<veiculos> {
-        return this.veiculosService.create(veiculo);
+    async create(@Body() createVehicleDto: CreateVehicleDto) {
+        return this.veiculosService.create(createVehicleDto);
     }
 
     @Put(':id')

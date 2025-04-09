@@ -24,7 +24,6 @@ export class veiculos{
   @JoinColumn({ name: 'marcaId' })
   marca: Brand;
 
-
   @ManyToOne(() => Category, (category) => category.veiculos, {
     nullable: false,
     onDelete: 'CASCADE',
